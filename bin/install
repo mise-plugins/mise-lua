@@ -75,8 +75,10 @@ install_lua() {
       curl -L "https://luarocks.org/releases/${luarocks_name}.tar.gz" --output luarocks.tar.gz || exit 1
       tar zxpf luarocks.tar.gz || exit 1
       cd "$luarocks_name" || exit 1
-      if [ -f "luarocks-3.13.0-1.rockspec" ]; then
-	      sed -i 's/tag = "v3.13.0"/tag = "v3.13.0",/' luarocks-3.13.0-1.rockspec
+      if [[ "$OSTYPE" == "darwin"* ]]; then
+        sed -i '' 's/tag = "v3.13.0"/tag = "v3.13.0",/' luarocks-3.13.0-1.rockspec
+      else
+        sed -i 's/tag = "v3.13.0"/tag = "v3.13.0",/' luarocks-3.13.0-1.rockspec
       fi
       ./configure --with-lua="$install_path" --with-lua-include="$install_path/include" --with-lua-lib="$install_path/lib" --prefix="$install_path/luarocks" || exit 1
       make bootstrap || exit 1
